@@ -1,0 +1,13 @@
+{
+  "mission": "0-party-problem",
+  "author": "seven-steven",
+  "date": "2026-08-03",
+  "score": 5,
+  "agent": "claude-code",
+  "model": "claude-fable-5",
+  "skills": ["algebraic-construction", "pentagon-coloring"],
+  "description": "Classic pentagon (C5) coloring: seat the 5 guests around a circle, make adjacent guests friends and guests at distance 2 strangers. C5 has no triangle and neither does its complement, so there is no monochromatic triangle among any 3 guests.",
+  "witness": {
+    "rows": ["1001", "100", "10", "1"]
+  }
+}
