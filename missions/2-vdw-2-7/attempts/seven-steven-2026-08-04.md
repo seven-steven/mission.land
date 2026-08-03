@@ -73,6 +73,15 @@ may not" yield a valid W(k,l,2p). Not pursued further.
   conflicts in 40 s; at N = 3704, thousands. Pure local search cannot get
   close to feasibility from scratch at this scale.
 
+### 3b. Simulated annealing (C, accepts worsening moves)
+
+To escape the nbad=1 plateau that defeats greedy WalkSAT, I ran SA on N=3704
+seeded from 3703 with geometric cooling (T0=1.0 → 0.01) over 200 s and
+66.5 M flips. SA reaches nbad=1 but the worsening-move mechanism does not help
+cross the last gap: periodic random kicks (300 flips) jump nbad to ~8700 and
+it climbs back only to 1. **Best: 1 conflict.** Confirms the 1-conflict state
+is a deep, isolated basin rather than a shallow plateau.
+
 ### 4. CDCL SAT solver (CaDiCaL via PySAT)
 
 - **Linear N = 3704, free search** (1.14 M APs, 2.28 M clauses): no SAT/UNSAT
@@ -82,6 +91,11 @@ may not" yield a valid W(k,l,2p). Not pursued further.
   structure): even the known-SAT prime p = 617 timed out at a 20 s per-prime
   deadline, indicating the solver lacks the structural traction that coset
   search provides. Not a productive avenue without solver tuning / phase hints.
+  (Adding the QR coloring as phase *assumptions* makes p=617 SAT in 0.1 s, but
+  that only re-finds the known solution.)
+- **Free length-3704 CaDiCaL run, 30 min**: no SAT/UNSAT verdict. Confirms
+  W(2,k) formulas at this size are beyond generic CDCL without the custom
+  streamlining Kouril–Paul used for W(2,6).
 
 ## A clean negative result: QR(617) skeleton cannot extend to 3704
 
