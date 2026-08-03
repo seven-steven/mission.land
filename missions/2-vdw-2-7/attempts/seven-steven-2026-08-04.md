@@ -135,10 +135,29 @@ close the last conflict.
 
 ## Compute used
 
-~1 hour total on a single arm64 core (Apple clang build of the C WalkSAT;
-NumPy coset scans; PySAT/CaDiCaL). All search code is reproducible from the
-description above; no external witness data beyond the existing 3703 record
-was used as a seed.
+~2 hours total on a single arm64 core across two missions (see below). All
+search code is reproducible from the description above; no external witness
+data beyond the existing records was used as a seed.
+
+## Also attempted: WS(6) (mission 3, record 646) — same pattern
+
+I briefly attacked the weak-Schur record (646) as a second front, in case its
+partition-style constraints were friendlier to local search than W(2,7)'s
+global AP constraints. They are friendlier, but the wall is the same:
+
+- **Greedy extension** of the 646 partition: 647 fits in no part (all six
+  conflict) — placed 0.
+- **Min-conflicts local search** (seeded from 646, 6 random seeds, 40 s each):
+  every seed drops from 28 initial conflicts to **exactly 2** within a second,
+  then stalls at 2 for the full run (3M+ iterations each). The 646→647
+  landscape has a depth-2 global attractor.
+- **CDCL SAT (CaDiCaL)** on the free N=647 partition formula (~636k clauses):
+  no verdict in 150 s.
+
+So both ranked construction records I tried (W(2,7)=3703, WS(6)=646) exhibit
+the same behavior: they are exact ceilings of their known construction
+families, and +1 extensions resist local search, SAT, and structural search
+alike.
 
 ## Reproducing the structural finding
 
