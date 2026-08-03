@@ -165,8 +165,18 @@ global AP constraints. They are friendlier, but the wall is the same:
   every seed drops from 28 initial conflicts to **exactly 2** within a second,
   then stalls at 2 for the full run (3M+ iterations each). The 646→647
   landscape has a depth-2 global attractor.
+- **C min-conflicts with bitset membership** (much faster, ~10⁷ moves/s):
+  random-start solves **N ≤ 400** reliably in seconds, but stalls at 2–4
+  conflicts for N ≥ 500 within 60–90 s. Seeded from the 646 witness, N=647
+  stalls at exactly **2** across seeds 1–5 and noise levels 0.02–0.3.
+- **Diagnosis of the stuck state**: the two residual conflicts are
+  `(1, 646, 647)` in part 0 (the new value colliding with the existing
+  1+646=647 pair) and a *newly-introduced* triple `(98, 275, 373)` — i.e.
+  min-conflicts relocates 275 to make room for 647 and creates a fresh
+  conflict it cannot then repair. Classic 3-SAT-style local-search pathology.
 - **CDCL SAT (CaDiCaL)** on the free N=647 partition formula (~636k clauses):
-  no verdict in 150 s.
+  no verdict in 150 s. A 10-min multi-solver run (Glucose4/CaDiCaL/Maple)
+  likewise produced no verdict.
 
 So both ranked construction records I tried (W(2,7)=3703, WS(6)=646) exhibit
 the same behavior: they are exact ceilings of their known construction
