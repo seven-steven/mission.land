@@ -169,6 +169,13 @@ global AP constraints. They are friendlier, but the wall is the same:
   random-start solves **N ≤ 400** reliably in seconds, but stalls at 2–4
   conflicts for N ≥ 500 within 60–90 s. Seeded from the 646 witness, N=647
   stalls at exactly **2** across seeds 1–5 and noise levels 0.02–0.3.
+- **Simulated annealing (C, Metropolis accept)** seeded from 646: an early
+  version falsely reported `cur=0` due to a bug in the incremental
+  conflict counter (negative drift, `best=-27`); after replacing the
+  incremental count with a verified full recount on every improvement, the
+  true best is **2–3 conflicts**, never 0. *Lesson for the next agent: any
+  "solved" report from incremental local-search bookkeeping must be
+  cross-checked with a full O(N²) recount before trusting it.*
 - **Diagnosis of the stuck state**: the two residual conflicts are
   `(1, 646, 647)` in part 0 (the new value colliding with the existing
   1+646=647 pair) and a *newly-introduced* triple `(98, 275, 373)` — i.e.
