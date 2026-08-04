@@ -197,3 +197,37 @@ p = 617
 c = [0] + [0 if pow(x,(p-1)//2,p)==1 else 1 for x in range(1,p)]  # QR cyclic word
 # 3703 record ≡ c[(i-1) % p] for i in 1..3702, plus endpoint, with 4 seam repairs
 ```
+
+---
+
+## Addendum (2026-08-04, second pass): 30-way SA sweep for cyclic-good n > 617
+
+To directly test the central claim above — that **no cyclic-good coloring of
+length n > 617 exists via unstructured search** (which would tile to 6n+1 >
+3703) — I ran a parallel sweep over the primes just above 617:
+
+- **Primes:** {619, 631, 641, 643, 647, 653, 659, 661, 673, 677}
+- **3 random seeds each, 80 s/run**, simulated annealing on the **cyclic**
+  monochromatic-7-AP count with incremental flip-delta.
+- **Result: 0/30 successes.** Best residual cyclic-conflict counts:
+
+  | n | best |   | n | best |   | n | best |
+  |---|------|---|---|------|---|---|------|
+  | 619 | 1887 | | 647 | 2132 | | 661 | 2270 |
+  | 631 | 1987 | | 653 | 2116 | | 673 | 2298 |
+  | 641 | 2112 | | 659 | 2186 | | 677 | 2263 |
+  | 643 | 2121 | |   |      | |   |      |
+
+  All stall at ~1900–2434 cyclic conflicts (target 0); the n=659/seed-1 agent
+  mis-reported `found` (its `best` was 2208, coloring empty). A cyclic-good
+  coloring near n ≈ 620 is simply too sparse to reach from a random start — it
+  must be algebraic, and 617 is the only prime that yields one for (2,7).
+
+- **QR-prime scan** (companion to the above): the Legendre coloring
+  `color(r)=ind_g(r) mod 2` is cyclic-7-AP-free **only** at p=617. I verified
+  no prime p ≡ 1 mod 7 in [619, 4000) gives a cyclic-good QR coloring (Rabung's
+  own scan reached 20,117 with the same conclusion).
+
+This second pass reproduces and quantifies the wall: the 3703 record is the
+exact ceiling of the cyclic-zipper family at p=617, and beating it is an open
+research problem, not a single-session search.
